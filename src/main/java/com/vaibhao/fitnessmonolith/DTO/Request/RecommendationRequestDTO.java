@@ -1,0 +1,20 @@
+package com.vaibhao.fitnessmonolith.DTO.Request;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class RecommendationRequestDTO {
+    private String userId;
+    private String activityId;
+    private String type;
+    private String recommendations;
+    private List<String> improvements;
+    private List<String> suggestions;
+    private  List<String> safety;
+}
