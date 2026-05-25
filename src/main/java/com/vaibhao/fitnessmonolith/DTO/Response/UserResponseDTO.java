@@ -1,6 +1,6 @@
 package com.vaibhao.fitnessmonolith.DTO.Response;
 
-import com.vaibhao.fitnessmonolith.model.UserModel;
+import com.vaibhao.fitnessmonolith.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,9 +18,9 @@ public class UserResponseDTO {
     private String password;
     private String firstName;
     private String lastName;
+    private UserRole role;
     @CreationTimestamp
     private LocalDateTime createdAt;
-
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 }

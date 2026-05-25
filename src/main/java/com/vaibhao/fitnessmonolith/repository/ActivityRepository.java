@@ -1,6 +1,5 @@
 package com.vaibhao.fitnessmonolith.repository;
 
-import com.vaibhao.fitnessmonolith.DTO.Response.ActivityResponseDTO;
 import com.vaibhao.fitnessmonolith.model.ActivityModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

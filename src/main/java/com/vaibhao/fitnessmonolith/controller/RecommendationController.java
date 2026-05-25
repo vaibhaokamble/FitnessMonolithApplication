@@ -2,7 +2,6 @@ package com.vaibhao.fitnessmonolith.controller;
 
 import com.vaibhao.fitnessmonolith.DTO.Request.RecommendationRequestDTO;
 import com.vaibhao.fitnessmonolith.model.RecommendationModel;
-import com.vaibhao.fitnessmonolith.repository.RecommendationRepository;
 import com.vaibhao.fitnessmonolith.service.RecommendationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

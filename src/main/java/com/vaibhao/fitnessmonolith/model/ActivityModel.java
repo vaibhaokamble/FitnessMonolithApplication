@@ -51,5 +51,6 @@ public class ActivityModel {
 
     @OneToMany(mappedBy = "activity",cascade = CascadeType.ALL)
     @JsonIgnore
+    @Builder.Default
     private List<RecommendationModel> recommendations = new ArrayList<>();
 }
