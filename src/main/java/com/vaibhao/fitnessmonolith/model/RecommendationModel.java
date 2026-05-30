@@ -30,7 +30,10 @@ public class RecommendationModel {
     @JsonIgnore
     private UserModel user;
 
-    @ManyToOne
+    // ⚡ Bolt: Optimize performance by explicitly setting fetch type to LAZY
+    // JPA defaults @ManyToOne to EAGER, which can cause N+1 query problems.
+    // Especially with @JsonIgnore, we want to prevent unnecessary eager loading.
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "activity_id", nullable = true)
     @JsonIgnore
     private ActivityModel activity;
