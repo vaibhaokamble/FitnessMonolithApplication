@@ -1,0 +1,3 @@
+## 2026-05-31 - [JWT Parsing Overhead in Authentication Filter]
+**Learning:** In Spring Security filters, separating token validation from claims extraction can lead to redundant, expensive cryptographic operations. The `JwtAuthenticationFilter` was calling `jwtUtils.validateJwtToken`, `jwtUtils.getUserIdFromToken`, and `jwtUtils.getAllClaims` on the same token. Since each call parses and verifies the HMAC-SHA signature independently, a single authenticated request was doing 3x the necessary cryptographic work.
+**Action:** When validating tokens in a filter chain, parse the token exactly once. Return the resulting `Claims` object (which implies successful validation) and extract all necessary attributes (like subject and roles) from that cached object.
