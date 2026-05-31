@@ -36,29 +36,28 @@ public class JwtUtils {
                 .compact();
     }
 
-    public boolean validateJwtToken(String jwtToken) {
+    /**
+     * Validates the JWT token and returns its claims.
+     * This combines validation and parsing into a single operation
+     * to avoid redundant expensive cryptographic signature verifications.
+     *
+     * @param jwtToken The JWT token string
+     * @return Claims if the token is valid, null otherwise
+     */
+    public Claims validateAndGetClaims(String jwtToken) {
         try {
-            Jwts.parser().verifyWith((SecretKey) key()).build()
-                    .parseSignedClaims(jwtToken);
-            return true;
+            return Jwts.parser()
+                    .verifyWith((SecretKey) key())
+                    .build()
+                    .parseSignedClaims(jwtToken)
+                    .getPayload();
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
     private Key key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
-    }
-
-    public String getUserIdFromToken(String jwt) {
-        return Jwts.parser().verifyWith((SecretKey) key())
-                .build().parseSignedClaims(jwt)
-                .getPayload().getSubject();
-    }
-
-    public Claims getAllClaims(String jwt) {
-        return Jwts.parser().verifyWith((SecretKey) key())
-                .build().parseSignedClaims(jwt).getPayload();
     }
 }

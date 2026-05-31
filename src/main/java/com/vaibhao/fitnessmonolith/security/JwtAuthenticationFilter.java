@@ -30,29 +30,33 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         System.out.println("AuthTokenFilter Called");
         try {
             String jwt = parseJwt(request);
-            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
-                System.out.println("TOKEN THERE: " + jwt);
-                String userId = jwtUtils.getUserIdFromToken(jwt);
+            if (jwt != null) {
+                // Parse the token ONCE to both validate it and extract its claims,
+                // avoiding redundant expensive cryptographic signature verifications.
+                Claims claims = jwtUtils.validateAndGetClaims(jwt);
 
-                Claims claims = jwtUtils.getAllClaims(jwt);
-                @SuppressWarnings("unchecked")
-                List<String> roles = claims.get("roles", List.class);
-                System.out.println("ROLES: " + roles);
-                List<GrantedAuthority> authorities = List.of();
-                if (roles != null) {
-                    authorities = roles
-                            .stream()
-                            .map(role -> (GrantedAuthority) new SimpleGrantedAuthority(role))
-                            .toList();
+                if (claims != null) {
+                    System.out.println("TOKEN THERE: " + jwt);
+                    String userId = claims.getSubject();
+
+                    @SuppressWarnings("unchecked")
+                    List<String> roles = claims.get("roles", List.class);
+                    System.out.println("ROLES: " + roles);
+                    List<GrantedAuthority> authorities = List.of();
+                    if (roles != null) {
+                        authorities = roles
+                                .stream()
+                                .map(role -> (GrantedAuthority) new SimpleGrantedAuthority(role))
+                                .toList();
+                    }
+
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(userId,
+                                    null,
+                                    authorities);
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
-
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userId,
-                                null,
-                                authorities);
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-
             }
         } catch (Exception e) {
             e.printStackTrace();
