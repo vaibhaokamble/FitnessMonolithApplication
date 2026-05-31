@@ -25,12 +25,14 @@ public class RecommendationModel {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    // BOLT OPTIMIZATION: Use FetchType.LAZY to prevent N+1 queries when fetching lists of recommendations
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private UserModel user;
 
-    @ManyToOne
+    // BOLT OPTIMIZATION: Use FetchType.LAZY to prevent N+1 queries when fetching lists of recommendations
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "activity_id", nullable = true)
     @JsonIgnore
     private ActivityModel activity;
